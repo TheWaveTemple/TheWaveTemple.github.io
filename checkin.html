@@ -378,18 +378,18 @@
               <label><i class="fas fa-id-card-alt"></i> <span data-i18n="secondSurname">Second Surname</span></label>
               <input type="text" name="surname2" />
             </div>
-			
-			<div class="form-group">
+            
+            <div class="form-group">
               <label><i class="fas fa-flag"></i> <span data-i18n="nationality">Nationality</span></label>
               <input type="text" name="nationality" placeholder="e.g. ESP" required />
             </div>
-			
+            
             <div class="form-group">
               <label><i class="fas fa-birthday-cake"></i> <span data-i18n="dob">Date of Birth</span></label>
               <input type="date" name="dob" required />
             </div>
-			
-			<div class="form-group">
+            
+            <div class="form-group">
               <label><i class="fas fa-venus-mars"></i> <span data-i18n="gender">Gender</span></label>
               <select name="gender" required>
                 <option value="">Select</option>
@@ -398,8 +398,8 @@
                 <option value="O">Other</option>
               </select>
             </div>
-			
-			<div class="form-group">
+            
+            <div class="form-group">
               <label><i class="fas fa-file-alt"></i> <span data-i18n="documentType">Document Type</span></label>
               <select name="documentType" required>
                 <option value="">Select</option>
@@ -414,6 +414,15 @@
               <input type="text" name="document" required />
             </div>
             
+            <div class="form-group">
+              <label><i class="fas fa-calendar-check"></i> <span data-i18n="checkinDate">Check-in Date</span></label>
+              <input type="date" name="checkinDate" required />
+            </div>
+            
+            <div class="form-group">
+              <label><i class="fas fa-calendar-times"></i> <span data-i18n="checkoutDate">Check-out Date</span></label>
+              <input type="date" name="checkoutDate" required />
+            </div>
             
             <div class="form-group">
               <label><i class="fas fa-envelope"></i> <span data-i18n="email">Email</span></label>
@@ -424,8 +433,6 @@
               <label><i class="fas fa-phone"></i> <span data-i18n="phone">Phone Number</span></label>
               <input type="tel" name="phone" />
             </div>
-
-           
           </div>
         </div>
         
@@ -503,6 +510,8 @@
         dob: "Date of Birth",
         nationality: "Nationality",
         gender: "Gender",
+        checkinDate: "Check-in Date",
+        checkoutDate: "Check-out Date",
         address: "Address",
         city: "City",
         province: "Province",
@@ -530,6 +539,8 @@
         dob: "Fecha de nacimiento",
         nationality: "Nacionalidad",
         gender: "Género",
+        checkinDate: "Fecha de entrada",
+        checkoutDate: "Fecha de salida",
         address: "Dirección",
         city: "Ciudad",
         province: "Provincia",
@@ -557,6 +568,8 @@
         dob: "Date de naissance",
         nationality: "Nationalité",
         gender: "Genre",
+        checkinDate: "Date d'arrivée",
+        checkoutDate: "Date de départ",
         address: "Adresse",
         city: "Ville",
         province: "Province",
@@ -584,6 +597,8 @@
         dob: "Geburtsdatum",
         nationality: "Staatsangehörigkeit",
         gender: "Geschlecht",
+        checkinDate: "Check-in Datum",
+        checkoutDate: "Check-out Datum",
         address: "Adresse",
         city: "Stadt",
         province: "Provinz",
@@ -703,10 +718,10 @@
       clearSignature();
       this.classList.add('hidden');
       document.getElementById('submit-btn').disabled = false;
-	  window.scroll({
-	  top:0,
-	  behavior: "smooth",
-	  });
+      window.scroll({
+        top:0,
+        behavior: "smooth",
+      });
     });
 
     // Updated form submit handler
@@ -746,7 +761,9 @@
           phone: translations[lang].phone,
           dob: translations[lang].dob,
           nationality: translations[lang].nationality,
-          gender: translations[lang].gender
+          gender: translations[lang].gender,
+          checkinDate: translations[lang].checkinDate,
+          checkoutDate: translations[lang].checkoutDate
         };
         
         // Add personal info fields
@@ -803,42 +820,57 @@
           reader.onloadend = () => resolve(reader.result.split(',')[1]);
           reader.readAsDataURL(pdfBlob);
         });
-		
-		// Upload to Google Drive via Apps Script
-		const uploadResponse = await fetch("https://script.google.com/macros/s/AKfycbwmnSIcC_Lx5LBbh-Z8VPdsLnhe-a6c2HXr9eNBDFNScEs5EyRQyLx4svxjPn61UKj7YA/exec", {
-		  method: "POST",
-		  headers: {
-			"Content-Type": "application/x-www-form-urlencoded"
-		  },
-		body: new URLSearchParams({
-		  filename: filename,
-		  mimeType: "application/pdf",
-		  data: base64Pdf,
-		  name: formData.get('name'),
-		  surname1: formData.get('surname1')
-		})
-		});
+        
+        // Upload to Google Drive via Apps Script
+        const uploadResponse = await fetch("https://script.google.com/macros/s/AKfycbwmnSIcC_Lx5LBbh-Z8VPdsLnhe-a6c2HXr9eNBDFNScEs5EyRQyLx4svxjPn61UKj7YA/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: new URLSearchParams({
+            filename: filename,
+            mimeType: "application/pdf",
+            data: base64Pdf,
+            name: formData.get('name'),
+            surname1: formData.get('surname1'),
+            surname2: formData.get('surname2'),
+            nationality: formData.get('nationality'),
+            dob: formData.get('dob'),
+            gender: formData.get('gender'),
+            documentType: formData.get('documentType'),
+            document: formData.get('document'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            address: formData.get('address'),
+            city: formData.get('city'),
+            province: formData.get('province'),
+            postalCode: formData.get('postalCode'),
+            country: formData.get('country'),
+            checkinDate: formData.get('checkinDate'),
+            checkoutDate: formData.get('checkoutDate')
+          })
+        });
 
-		const responseText = await uploadResponse.text();
-		
-		if (responseText.includes("Success")) {
-			alert(`${translations[lang].formTitle} submitted successfully for ${guestName} ${guestSurname}!`);		  
-			form.reset();
-		  clearSignature();
-		} else {
-		  alert("Error: " + responseText);
-		}
-	  } catch (error) {
-		alert("An error occurred: " + error.message);
-		spinner.classList.add('hidden');
+        const responseText = await uploadResponse.text();
+        
+        if (responseText.includes("Success")) {
+          alert(`${translations[lang].formTitle} submitted successfully for ${guestName} ${guestSurname}!`);		  
+          form.reset();
+          clearSignature();
+        } else {
+          alert("Error: " + responseText);
+        }
+      } catch (error) {
+        alert("An error occurred: " + error.message);
+        spinner.classList.add('hidden');
         submitBtn.disabled = false;
-	  } finally {
-		// Hide spinner and re-enable button
-          spinner.classList.add('hidden');
-          guestCount++;
-          guestCountElement.textContent = guestCount;
-          addAnotherBtn.classList.remove('hidden');
-	  }
+      } finally {
+        // Hide spinner and re-enable button
+        spinner.classList.add('hidden');
+        guestCount++;
+        guestCountElement.textContent = guestCount;
+        addAnotherBtn.classList.remove('hidden');
+      }
         
     });
   </script>
