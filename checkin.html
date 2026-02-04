@@ -99,8 +99,8 @@
               <label data-i18n="gender">Gender</label>
               <select name="gender" required>
                 <option value="" data-i18n="select">Select...</option>
-                <option value="H" data-i18n="male">Male</option>
-                <option value="M" data-i18n="female">Female</option>
+                <option value="M" data-i18n="male">Male</option>
+                <option value="F" data-i18n="female">Female</option>
                 <option value="O" data-i18n="other">Other</option>
               </select>
             </div>
@@ -114,7 +114,7 @@
               <label data-i18n="documentType">Type</label>
               <select name="documentType" id="docTypeSelect" onchange="toggleSupportField()" required>
                 <option value="" data-i18n="select">Select...</option>
-                <option value="NIF">DNI (Spain)</option>
+                <option value="DNI">DNI (Spain)</option>
                 <option value="NIE">NIE (Spain)</option>
                 <option value="PAS">Passport</option>
                 <option value="OTRO" data-i18n="otherDoc">Other</option>
@@ -139,6 +139,7 @@
               <input type="text" name="country" list="iso-countries" placeholder="ESP" pattern="[A-Z]{3}" maxlength="3" required class="uppercase">
             </div>
             <div class="form-group"><label data-i18n="email">Email</label><input type="email" name="email" required></div>
+             <div class="form-group"><label data-i18n="phone">Phone</label><input type="tel" name="phone"></div>
           </div>
         </div>
 
@@ -180,7 +181,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    // --- LISTA DE PAÍSES (INCLUIDO PALESTINA PSE) ---
+    // --- LISTA DE PAÍSES ---
     const countryList = {
         "AFG":"Afghanistan", "ALB":"Albania", "DZA":"Algeria", "AND":"Andorra", "AGO":"Angola", "ARG":"Argentina", "ARM":"Armenia", "AUS":"Australia", "AUT":"Austria", "AZE":"Azerbaijan",
         "BEL":"Belgium", "BEN":"Benin", "BOL":"Bolivia", "BRA":"Brazil", "BGR":"Bulgaria", "CAN":"Canada", "CHL":"Chile", "CHN":"China", "COL":"Colombia", "CRI":"Costa Rica", "HRV":"Croatia",
@@ -200,47 +201,55 @@
         datalist.appendChild(opt);
     });
 
-    // --- TRADUCCIONES (4 IDIOMAS) ---
+    // --- TRADUCCIONES ---
     const translations = {
       en: {
-        headerSubtitle: "Registration for SES Hospedajes", regTitle: "Registration", personalInfo: "Personal Details",
-        fullName: "Name", surname: "1st Surname", secondSurname: "2nd Surname", nationality: "Nationality (ISO 3)",
+        formTitle: "Guest Registration Form",
+        regTitle: "Registration", personalInfo: "Personal Details",
+        fullName: "Name", surname: "1st Surname", secondSurname: "2nd Surname", nationality: "Nationality",
         dob: "Birth Date", gender: "Gender", select: "Select...", male: "Male", female: "Female", other: "Other",
         docTitle: "ID Document", documentType: "Type", otherDoc: "Other ID", documentId: "Number",
-        supportNumber: "Support No. (9 chars)", addressInfo: "Address", address: "Street", city: "City",
-        postalCode: "Postcode", country: "Country (ISO 3)", email: "Email", stayInfo: "Stay & Payment",
-        checkinDate: "Check-in Date", checkoutDate: "Check-out Date", paymentType: "Payment", payPlatform: "Booking/Airbnb/Online",
-        payCard: "Card", payCash: "Cash", signature: "Signature", clear: "Clear", submit: "Submit"
+        supportNumber: "Support No.", addressInfo: "Address", address: "Street", city: "City",
+        postalCode: "Postcode", country: "Country", email: "Email", phone: "Phone", stayInfo: "Stay & Payment",
+        checkinDate: "Check-in Date", checkoutDate: "Check-out Date", paymentType: "Payment Method", payPlatform: "Booking/Airbnb/Online",
+        payCard: "Card", payCash: "Cash", signature: "Signature", clear: "Clear", submit: "Submit",
+        legalText: "This information is collected to comply with Spanish law (Real Decreto 933/2021) for security purposes."
       },
       es: {
-        headerSubtitle: "Registro legal para SES Hospedajes", regTitle: "Registro", personalInfo: "Datos Personales",
-        fullName: "Nombre", surname: "1er Apellido", secondSurname: "2do Apellido", nationality: "Nacionalidad (ISO 3)",
+        formTitle: "Hoja de Registro de Huésped",
+        regTitle: "Registro", personalInfo: "Datos Personales",
+        fullName: "Nombre", surname: "1er Apellido", secondSurname: "2do Apellido", nationality: "Nacionalidad",
         dob: "Fecha Nacimiento", gender: "Género", select: "Seleccionar...", male: "Hombre", female: "Mujer", other: "Otro",
         docTitle: "Documentación", documentType: "Tipo", otherDoc: "Otro Documento", documentId: "Número",
-        supportNumber: "Nº Soporte (9 car.)", addressInfo: "Dirección", address: "Calle", city: "Ciudad",
-        postalCode: "Código Postal", country: "País (ISO 3)", email: "Email", stayInfo: "Estancia y Pago",
-        checkinDate: "Fecha de entrada", checkoutDate: "Fecha de salida", paymentType: "Pago", payPlatform: "Booking/Airbnb/Online",
-        payCard: "Tarjeta", payCash: "Efectivo", signature: "Firma", clear: "Borrar", submit: "Enviar"
+        supportNumber: "Nº Soporte", addressInfo: "Dirección", address: "Calle", city: "Ciudad",
+        postalCode: "Código Postal", country: "País", email: "Email", phone: "Teléfono", stayInfo: "Estancia y Pago",
+        checkinDate: "Fecha de entrada", checkoutDate: "Fecha de salida", paymentType: "Forma de Pago", payPlatform: "Booking/Airbnb/Online",
+        payCard: "Tarjeta", payCash: "Efectivo", signature: "Firma", clear: "Borrar", submit: "Enviar",
+        legalText: "Esta información se recopila para cumplir con la ley española (Real Decreto 933/2021) con fines de seguridad."
       },
       fr: {
-        headerSubtitle: "Enregistrement SES Hospedajes", regTitle: "Enregistrement", personalInfo: "Infos Personnelles",
-        fullName: "Prénom", surname: "Nom", secondSurname: "Deuxième Nom", nationality: "Nationalité (ISO 3)",
+        formTitle: "Fiche d'Enregistrement",
+        regTitle: "Enregistrement", personalInfo: "Infos Personnelles",
+        fullName: "Prénom", surname: "Nom", secondSurname: "Deuxième Nom", nationality: "Nationalité",
         dob: "Date Naissance", gender: "Genre", select: "Sélectionner...", male: "Homme", female: "Femme", other: "Autre",
         docTitle: "Pièce d'identité", documentType: "Type", otherDoc: "Autre ID", documentId: "Numéro",
-        supportNumber: "Nº Support (9 car.)", addressInfo: "Adresse", address: "Rue", city: "Ville",
-        postalCode: "Code Postal", country: "Pays (ISO 3)", email: "E-mail", stayInfo: "Séjour et Paiement",
+        supportNumber: "Nº Support", addressInfo: "Adresse", address: "Rue", city: "Ville",
+        postalCode: "Code Postal", country: "Pays", email: "E-mail", phone: "Téléphone", stayInfo: "Séjour et Paiement",
         checkinDate: "Date d'arrivée", checkoutDate: "Date de départ", paymentType: "Paiement", payPlatform: "Booking/Airbnb/Online",
-        payCard: "Carte", payCash: "Espèces", signature: "Signature", clear: "Effacer", submit: "Envoyer"
+        payCard: "Carte", payCash: "Espèces", signature: "Signature", clear: "Effacer", submit: "Envoyer",
+        legalText: "Ces informations sont collectées pour se conformer à la loi espagnole (Real Decreto 933/2021) à des fins de sécurité."
       },
       de: {
-        headerSubtitle: "Registrierung SES Hospedajes", regTitle: "Anmeldung", personalInfo: "Persönliche Daten",
-        fullName: "Vorname", surname: "Nachname", secondSurname: "Zweiter Nachname", nationality: "Nationalität (ISO 3)",
+        formTitle: "Anmeldeformular",
+        regTitle: "Anmeldung", personalInfo: "Persönliche Daten",
+        fullName: "Vorname", surname: "Nachname", secondSurname: "Zweiter Nachname", nationality: "Nationalität",
         dob: "Geburtsdatum", gender: "Geschlecht", select: "Wählen...", male: "Männlich", female: "Weiblich", other: "Andere",
         docTitle: "Ausweisdokument", documentType: "Typ", otherDoc: "Anderes Dokument", documentId: "Nummer",
-        supportNumber: "Support-Nr. (9 Zeichen)", addressInfo: "Adresse", address: "Straße", city: "Stadt",
-        postalCode: "Postleitzahl", country: "Land (ISO 3)", email: "E-Mail", stayInfo: "Aufenthalt & Zahlung",
+        supportNumber: "Support-Nr.", addressInfo: "Adresse", address: "Straße", city: "Stadt",
+        postalCode: "Postleitzahl", country: "Land", email: "E-Mail", phone: "Telefon", stayInfo: "Aufenthalt & Zahlung",
         checkinDate: "Check-in Datum", checkoutDate: "Check-out Datum", paymentType: "Zahlungsart", payPlatform: "Booking/Airbnb/Online",
-        payCard: "Karte", payCash: "Barzahlung", signature: "Unterschrift", clear: "Löschen", submit: "Absenden"
+        payCard: "Karte", payCash: "Barzahlung", signature: "Unterschrift", clear: "Löschen", submit: "Absenden",
+        legalText: "Diese Informationen werden gemäß dem spanischen Gesetz (Real Decreto 933/2021) zu Sicherheitszwecken erhoben."
       }
     };
 
@@ -253,18 +262,18 @@
     document.getElementById("lang-switcher").addEventListener("change", e => applyTranslations(e.target.value));
     applyTranslations("en");
 
-    // --- ASIGNAR FECHA DE CONTRATO AL CARGAR ---
+    // --- ASIGNAR FECHA DE CONTRATO ---
     window.addEventListener('DOMContentLoaded', () => {
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('contractDate').value = today;
     });
 
-    // --- LÓGICA FORMULARIO ---
+    // --- LÓGICA DE FORMULARIO ---
     function toggleSupportField() {
       const type = document.getElementById('docTypeSelect').value;
       const group = document.getElementById('support-group');
       const input = document.getElementById('supportNumber');
-      if (type === 'NIF' || type === 'NIE') {
+      if (type === 'DNI' || type === 'NIE') { // Corregido NIF por DNI para que coincida con el value
         group.classList.remove('hidden'); input.required = true;
       } else {
         group.classList.add('hidden'); input.required = false; input.value = '';
@@ -279,58 +288,233 @@
     const canvas = document.getElementById('signature-pad');
     const ctx = canvas.getContext('2d');
     let drawing = false;
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; clearSignature(); };
-    window.addEventListener('resize', resize); resize();
-    const getPos = (e) => {
-        const rect = canvas.getBoundingClientRect();
-        return { x: (e.clientX || e.touches[0].clientX) - rect.left, y: (e.clientY || e.touches[0].clientY) - rect.top };
+    
+    const resizeCanvas = () => {
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = canvas.offsetWidth * ratio;
+      canvas.height = canvas.offsetHeight * ratio;
+      ctx.scale(ratio, ratio);
+      clearSignature(); // Resetea el canvas al redimensionar
     };
-    canvas.addEventListener('mousedown', (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
-    canvas.addEventListener('mousemove', (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); });
-    window.addEventListener('mouseup', () => drawing = false);
-    canvas.addEventListener('touchstart', (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
-    canvas.addEventListener('touchmove', (e) => { if(!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); });
-    window.addEventListener('touchend', () => drawing = false);
-    function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.strokeStyle = "#000"; ctx.lineWidth = 2; }
+    
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    
+    const getCoordinates = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      let x, y;
+      if (event.type.includes('mouse')) {
+        x = event.clientX - rect.left;
+        y = event.clientY - rect.top;
+      } else if (event.touches) {
+        x = event.touches[0].clientX - rect.left;
+        y = event.touches[0].clientY - rect.top;
+      }
+      return { x, y };
+    };
 
-    // --- ENVÍO ---
+    const startDrawing = (event) => { drawing = true; const { x, y } = getCoordinates(event); ctx.beginPath(); ctx.moveTo(x, y); event.preventDefault(); };
+    const draw = (event) => { if (!drawing) return; const { x, y } = getCoordinates(event); ctx.lineTo(x, y); ctx.stroke(); event.preventDefault(); };
+    const stopDrawing = () => { drawing = false; };
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDrawing);
+    
+    function clearSignature() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+    }
+
+    // --- ENVÍO Y GENERACIÓN DE PDF ROBUSTA ---
     document.getElementById('checkin-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      
       const btn = document.getElementById('submit-btn');
       const text = document.getElementById('btn-text');
       const spin = document.getElementById('btn-spinner');
+      const form = e.target;
+      const lang = document.getElementById('lang-switcher').value;
       
-      btn.disabled = true; spin.classList.remove('hidden'); text.style.opacity = "0.5";
-
+      btn.disabled = true; 
+      spin.classList.remove('hidden'); 
+      text.style.opacity = "0.5";
+      
       try {
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
-        
-        // PDF GENERATION
+        const formData = new FormData(form);
+        const signatureDataUrl = canvas.toDataURL();
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        doc.setFontSize(16);
-        doc.text("GUEST REGISTRATION FORM", 20, 20);
-        doc.setFontSize(10);
-        doc.text(`Contract Date: ${data.contractDate}`, 20, 30); // Incluido en PDF
-        doc.text(`Guest: ${data.name} ${data.surname1}`, 20, 40);
-        doc.text(`ID: ${data.documentType} - ${data.document}`, 20, 47);
-        doc.text(`Stay: ${data.checkinDate} to ${data.checkoutDate}`, 20, 54);
-        doc.addImage(canvas.toDataURL(), 'PNG', 20, 65, 60, 30);
         
-        const base64Pdf = doc.output('datauristring').split(',')[1];
+        // --- 1. GENERACIÓN DEL PDF (Estilo Checkin.html pero adaptado) ---
+        
+        // Título y Fecha Contrato
+        doc.setFontSize(16);
+        doc.text(translations[lang].formTitle, 105, 15, null, null, 'center');
+        doc.setFontSize(10);
+        doc.text(`Contract Date: ${formData.get('contractDate')}`, 105, 22, null, null, 'center');
+        
+        doc.setFontSize(12);
+        
+        // Sección: Información Personal
+        doc.setFont(undefined, 'bold');
+        doc.text(translations[lang].personalInfo + ":", 14, 30);
+        doc.setFont(undefined, 'normal');
+        
+        let y = 38;
+        const lineHeight = 7;
+        
+        // Mapeo manual para controlar el orden y añadir campos nuevos (supportNumber)
+        const personalData = [
+            { l: translations[lang].fullName, v: formData.get('name') },
+            { l: translations[lang].surname, v: formData.get('surname1') },
+            { l: translations[lang].secondSurname, v: formData.get('surname2') },
+            { l: translations[lang].nationality, v: formData.get('nationality') },
+            { l: translations[lang].dob, v: formData.get('dob') },
+            { l: translations[lang].gender, v: formData.get('gender') },
+            { l: translations[lang].documentType, v: formData.get('documentType') },
+            { l: translations[lang].documentId, v: formData.get('document') }
+        ];
 
-        const resp = await fetch("https://script.google.com/macros/s/AKfycbwmnSIcC_Lx5LBbh-Z8VPdsLnhe-a6c2HXr9eNBDFNScEs5EyRQyLx4svxjPn61UKj7YA/exec", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams({ ...data, filename: `CheckIn_${data.surname1}.pdf`, mimeType: "application/pdf", data: base64Pdf })
+        // Añadir supportNumber si existe
+        if(formData.get('supportNumber')) {
+            personalData.push({ l: translations[lang].supportNumber, v: formData.get('supportNumber') });
+        }
+
+        personalData.forEach(item => {
+            if(y > 270) { doc.addPage(); y = 20; }
+            doc.text(`${item.l}: ${item.v || '-'}`, 20, y);
+            y += lineHeight;
         });
 
-        const resultText = await resp.text();
-        if(resultText.includes("Success")) { alert("Submitted successfully!"); location.reload(); }
-        else { alert("Server Error: " + resultText); }
-      } catch (err) { alert("Network Error: " + err.message); }
-      finally { btn.disabled = false; spin.classList.add('hidden'); text.style.opacity = "1"; }
+        // Sección: Dirección y Contacto
+        y += 5;
+        doc.setFont(undefined, 'bold');
+        doc.text(translations[lang].addressInfo + ":", 14, y);
+        doc.setFont(undefined, 'normal');
+        y += lineHeight;
+
+        const addressData = [
+            { l: translations[lang].address, v: formData.get('address') },
+            { l: translations[lang].city, v: formData.get('city') },
+            { l: translations[lang].postalCode, v: formData.get('postalCode') },
+            { l: translations[lang].country, v: formData.get('country') },
+            { l: translations[lang].email, v: formData.get('email') },
+            { l: translations[lang].phone, v: formData.get('phone') }
+        ];
+
+        addressData.forEach(item => {
+             if(y > 270) { doc.addPage(); y = 20; }
+            doc.text(`${item.l}: ${item.v || '-'}`, 20, y);
+            y += lineHeight;
+        });
+
+        // Sección: Estancia y Pago
+        y += 5;
+        doc.setFont(undefined, 'bold');
+        doc.text(translations[lang].stayInfo + ":", 14, y);
+        doc.setFont(undefined, 'normal');
+        y += lineHeight;
+
+        const stayData = [
+            { l: translations[lang].checkinDate, v: formData.get('checkinDate') },
+            { l: translations[lang].checkoutDate, v: formData.get('checkoutDate') },
+            { l: translations[lang].paymentType, v: formData.get('paymentType') }
+        ];
+
+        stayData.forEach(item => {
+            doc.text(`${item.l}: ${item.v || '-'}`, 20, y);
+            y += lineHeight;
+        });
+
+        // Sección: Firma
+        y += 10;
+        if(y > 230) { doc.addPage(); y = 20; } // Asegurar espacio para firma
+        doc.setFont(undefined, 'bold');
+        doc.text(translations[lang].signature + ":", 14, y);
+        y += 5;
+        doc.addImage(signatureDataUrl, 'PNG', 20, y, 60, 30);
+        y += 40;
+
+        // Texto Legal
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'normal');
+        doc.setTextColor(100);
+        const splitTitle = doc.splitTextToSize(translations[lang].legalText, 180);
+        doc.text(splitTitle, 14, y);
+
+        // Generar nombre de archivo
+        const guestName = formData.get('name') || 'Guest';
+        const guestSurname = formData.get('surname1') || 'Name';
+        const timestamp = new Date().toISOString().split('T')[0];
+        const filename = `${guestSurname.replace(/\s+/g, '_')}_${guestName.replace(/\s+/g, '_')}_${timestamp}.pdf`;
+        
+        // Convertir a Base64 para subida
+        const pdfBlob = doc.output('blob');
+        const base64Pdf = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result.split(',')[1]);
+          reader.readAsDataURL(pdfBlob);
+        });
+
+        // --- 2. SUBIDA A GOOGLE DRIVE (Fetch) ---
+        const uploadResponse = await fetch("https://script.google.com/macros/s/AKfycbwmnSIcC_Lx5LBbh-Z8VPdsLnhe-a6c2HXr9eNBDFNScEs5EyRQyLx4svxjPn61UKj7YA/exec", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({
+            filename: filename,
+            mimeType: "application/pdf",
+            data: base64Pdf,
+            // Mapeo de datos para el script (manteniendo compatibilidad)
+            contractDate: formData.get('contractDate'),
+            name: formData.get('name'),
+            surname1: formData.get('surname1'),
+            surname2: formData.get('surname2'),
+            nationality: formData.get('nationality'),
+            dob: formData.get('dob'),
+            gender: formData.get('gender'),
+            documentType: formData.get('documentType'),
+            document: formData.get('document'),
+            supportNumber: formData.get('supportNumber'), // Nuevo campo
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            address: formData.get('address'),
+            city: formData.get('city'),
+            province: formData.get('province') || '', // No está en form 5 pero el script podría esperarlo
+            postalCode: formData.get('postalCode'),
+            country: formData.get('country'),
+            checkinDate: formData.get('checkinDate'),
+            checkoutDate: formData.get('checkoutDate'),
+            paymentType: formData.get('paymentType') // Nuevo campo
+          })
+        });
+
+        const responseText = await uploadResponse.text();
+        
+        if (responseText.includes("Success")) {
+          alert(`Registration submitted successfully for ${guestName}!`);		  
+          form.reset();
+          clearSignature();
+          document.getElementById('contractDate').value = timestamp; // Restaurar fecha oculta
+          document.getElementById('support-group').classList.add('hidden'); // Ocultar campo soporte
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          alert("Error from server: " + responseText);
+        }
+
+      } catch (error) {
+        console.error(error);
+        alert("An error occurred: " + error.message);
+      } finally {
+        btn.disabled = false;
+        spin.classList.add('hidden');
+        text.style.opacity = "1";
+      }
     });
   </script>
 </body>
