@@ -150,9 +150,12 @@
         "SVK":"Slovakia", "SVN":"Slovenia", "ZAF":"South Africa", "ESP":"Spain", "SWE":"Sweden", "CHE":"Switzerland", "THA":"Thailand", "TUN":"Tunisia", "TUR":"Turkey", "UKR":"Ukraine",
         "ARE":"United Arab Emirates", "GBR":"United Kingdom", "USA":"United States", "URY":"Uruguay", "VEN":"Venezuela", "VNM":"Vietnam"
     };
+
     const datalist = document.getElementById('iso-countries');
     Object.entries(countryList).forEach(([code, name]) => {
-        const opt = document.createElement('option'); opt.value = code; opt.textContent = name; datalist.appendChild(opt);
+        const opt = document.createElement('option');
+        opt.value = code; opt.textContent = name;
+        datalist.appendChild(opt);
     });
     
     // [Keep your existing Translations Logic]
@@ -206,6 +209,15 @@
         legalText: "Diese Informationen werden gemäß dem spanischen Gesetz (Real Decreto 933/2021) zu Sicherheitszwecken erhoben."
       }
     };    
+	
+	function applyTranslations(lang) {
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (translations[lang][key]) el.textContent = translations[lang][key];
+      });
+    }
+    document.getElementById("lang-switcher").addEventListener("change", e => applyTranslations(e.target.value));
+    applyTranslations("en");
     // --- SIGNATURE LOGIC (Unchanged) ---
     const canvas = document.getElementById('signature-pad');
     const ctx = canvas.getContext('2d');
