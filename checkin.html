@@ -139,15 +139,73 @@
     });
 
     // [Keep your existing ISO Countries and Translations logic here...]
-    const countryList = { "ESP":"Spain", "USA":"United States", "GBR":"United Kingdom", "FRA":"France", "DEU":"Germany" }; // (Shortened for brevity, keep your full list)
+    const countryList = {
+        "AFG":"Afghanistan", "ALB":"Albania", "DZA":"Algeria", "AND":"Andorra", "AGO":"Angola", "ARG":"Argentina", "ARM":"Armenia", "AUS":"Australia", "AUT":"Austria", "AZE":"Azerbaijan",
+        "BEL":"Belgium", "BEN":"Benin", "BOL":"Bolivia", "BRA":"Brazil", "BGR":"Bulgaria", "CAN":"Canada", "CHL":"Chile", "CHN":"China", "COL":"Colombia", "CRI":"Costa Rica", "HRV":"Croatia",
+        "CUB":"Cuba", "CYP":"Cyprus", "CZE":"Czech Republic", "DNK":"Denmark", "DOM":"Dominican Republic", "ECU":"Ecuador", "EGY":"Egypt", "SLV":"El Salvador", "EST":"Estonia", "FIN":"Finland",
+        "FRA":"France", "GEO":"Georgia", "DEU":"Germany", "GRC":"Greece", "GTM":"Guatemala", "HND":"Honduras", "HUN":"Hungary", "ISL":"Iceland", "IND":"India", "IDN":"Indonesia", "IRL":"Ireland",
+        "ISR":"Israel", "ITA":"Italy", "JAM":"Jamaica", "JPN":"Japan", "JOR":"Jordan", "KAZ":"Kazakhstan", "KEN":"Kenya", "KOR":"South Korea", "KWT":"Kuwait", "LVA":"Latvia", "LTU":"Lithuania",
+        "LUX":"Luxembourg", "MEX":"Mexico", "MCO":"Monaco", "MAR":"Morocco", "NLD":"Netherlands", "NZL":"New Zealand", "NIC":"Nicaragua", "NOR":"Norway", "PAN":"Panama", "PRY":"Paraguay",
+        "PER":"Peru", "PHL":"Philippines", "POL":"Poland", "PRT":"Portugal", "PSE":"Palestine", "ROU":"Romania", "RUS":"Russia", "SAU":"Saudi Arabia", "SEN":"Senegal", "SRB":"Serbia", "SGP":"Singapore",
+        "SVK":"Slovakia", "SVN":"Slovenia", "ZAF":"South Africa", "ESP":"Spain", "SWE":"Sweden", "CHE":"Switzerland", "THA":"Thailand", "TUN":"Tunisia", "TUR":"Turkey", "UKR":"Ukraine",
+        "ARE":"United Arab Emirates", "GBR":"United Kingdom", "USA":"United States", "URY":"Uruguay", "VEN":"Venezuela", "VNM":"Vietnam"
+    };
     const datalist = document.getElementById('iso-countries');
     Object.entries(countryList).forEach(([code, name]) => {
         const opt = document.createElement('option'); opt.value = code; opt.textContent = name; datalist.appendChild(opt);
     });
     
     // [Keep your existing Translations Logic]
-    const translations = { en: { regTitle: "Registration", submit: "Submit Registration", clear: "Clear" } }; // (Shortened)
-    
+	const translations = {
+      en: {
+        formTitle: "Guest Registration Form",
+        regTitle: "Registration", personalInfo: "Personal Details",
+        fullName: "Name", surname: "1st Surname", secondSurname: "2nd Surname", nationality: "Nationality",
+        dob: "Birth Date", gender: "Gender", select: "Select...", male: "Male", female: "Female", other: "Other",
+        docTitle: "ID Document", documentType: "Type", otherDoc: "Other ID", documentId: "Number",
+        supportNumber: "Support No.", addressInfo: "Address", address: "Street", city: "City",
+        postalCode: "Postcode", country: "Country", email: "Email", phone: "Phone", stayInfo: "Stay & Payment",
+        checkinDate: "Check-in Date", checkoutDate: "Check-out Date", paymentType: "Payment Method", payPlatform: "Booking/Airbnb/Online",
+        payCard: "Card", payCash: "Cash", signature: "Signature", clear: "Clear", submit: "Submit",
+        legalText: "This information is collected to comply with Spanish law (Real Decreto 933/2021) for security purposes."
+      },
+      es: {
+        formTitle: "Hoja de Registro de Huésped",
+        regTitle: "Registro", personalInfo: "Datos Personales",
+        fullName: "Nombre", surname: "1er Apellido", secondSurname: "2do Apellido", nationality: "Nacionalidad",
+        dob: "Fecha Nacimiento", gender: "Género", select: "Seleccionar...", male: "Hombre", female: "Mujer", other: "Otro",
+        docTitle: "Documentación", documentType: "Tipo", otherDoc: "Otro Documento", documentId: "Número",
+        supportNumber: "Nº Soporte", addressInfo: "Dirección", address: "Calle", city: "Ciudad",
+        postalCode: "Código Postal", country: "País", email: "Email", phone: "Teléfono", stayInfo: "Estancia y Pago",
+        checkinDate: "Fecha de entrada", checkoutDate: "Fecha de salida", paymentType: "Forma de Pago", payPlatform: "Booking/Airbnb/Online",
+        payCard: "Tarjeta", payCash: "Efectivo", signature: "Firma", clear: "Borrar", submit: "Enviar",
+        legalText: "Esta información se recopila para cumplir con la ley española (Real Decreto 933/2021) con fines de seguridad."
+      },
+      fr: {
+        formTitle: "Fiche d'Enregistrement",
+        regTitle: "Enregistrement", personalInfo: "Infos Personnelles",
+        fullName: "Prénom", surname: "Nom", secondSurname: "Deuxième Nom", nationality: "Nationalité",
+        dob: "Date Naissance", gender: "Genre", select: "Sélectionner...", male: "Homme", female: "Femme", other: "Autre",
+        docTitle: "Pièce d'identité", documentType: "Type", otherDoc: "Autre ID", documentId: "Numéro",
+        supportNumber: "Nº Support", addressInfo: "Adresse", address: "Rue", city: "Ville",
+        postalCode: "Code Postal", country: "Pays", email: "E-mail", phone: "Téléphone", stayInfo: "Séjour et Paiement",
+        checkinDate: "Date d'arrivée", checkoutDate: "Date de départ", paymentType: "Paiement", payPlatform: "Booking/Airbnb/Online",
+        payCard: "Carte", payCash: "Espèces", signature: "Signature", clear: "Effacer", submit: "Envoyer",
+        legalText: "Ces informations sont collectées pour se conformer à la loi espagnole (Real Decreto 933/2021) à des fins de sécurité."
+      },
+      de: {
+        formTitle: "Anmeldeformular",
+        regTitle: "Anmeldung", personalInfo: "Persönliche Daten",
+        fullName: "Vorname", surname: "Nachname", secondSurname: "Zweiter Nachname", nationality: "Nationalität",
+        dob: "Geburtsdatum", gender: "Geschlecht", select: "Wählen...", male: "Männlich", female: "Weiblich", other: "Andere",
+        docTitle: "Ausweisdokument", documentType: "Typ", otherDoc: "Anderes Dokument", documentId: "Nummer",
+        supportNumber: "Support-Nr.", addressInfo: "Adresse", address: "Straße", city: "Stadt",
+        postalCode: "Postleitzahl", country: "Land", email: "E-Mail", phone: "Telefon", stayInfo: "Aufenthalt & Zahlung",
+        checkinDate: "Check-in Datum", checkoutDate: "Check-out Datum", paymentType: "Zahlungsart", payPlatform: "Booking/Airbnb/Online",
+        payCard: "Karte", payCash: "Barzahlung", signature: "Unterschrift", clear: "Löschen", submit: "Absenden",
+        legalText: "Diese Informationen werden gemäß dem spanischen Gesetz (Real Decreto 933/2021) zu Sicherheitszwecken erhoben."
+      }
+    };    
     // --- SIGNATURE LOGIC (Unchanged) ---
     const canvas = document.getElementById('signature-pad');
     const ctx = canvas.getContext('2d');
