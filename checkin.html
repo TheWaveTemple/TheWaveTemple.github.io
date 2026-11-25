@@ -277,6 +277,20 @@
         // Add contract date if missing
         if(!object.contractDate) object.contractDate = new Date().toISOString().split('T')[0];
 
+        // Map form field names to the names expected by code.gs
+        Object.assign(object, {
+          nombre: object.name,
+          apellido1: object.surname1,
+          apellido2: object.surname2,
+          numeroDocumento: object.document,
+          fechaNacimiento: object.dob,
+          fechaEntrada: object.checkinDate,
+          fechaSalida: object.checkoutDate,
+          fechaContrato: object.contractDate,
+          nacionalidad: object.nationality,
+          pais: object.country
+        });
+
         // Send JSON to Google Apps Script
         const response = await fetch("https://script.google.com/macros/s/AKfycbwOaLUjZcZK3iaL9KthetgO7ZeBRIwYth2aCw7AkKeJ-6qyCFulctRMYCeKmCDw41Er/exec", {
           method: "POST",
@@ -285,7 +299,8 @@
 
         const result = await response.text();
         
-        if (result.includes("Success")) {
+        const ok = result.includes("Success") || result.includes('"success":true');
+        if (ok) {
           alert("Check-in successful! PDF sent to administration.");
           form.reset();
           clearSignature();
