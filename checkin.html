@@ -278,7 +278,7 @@
         if(!object.contractDate) object.contractDate = new Date().toISOString().split('T')[0];
 
         // Send JSON to Google Apps Script
-        const response = await fetch("https://script.google.com/macros/s/AKfycbxDbGogi_oMq4i2NooqvD-hF5hGA533L7uZqMyuy2QrkdGLb4jwqG1PkuX8A5KnLVvATA/exec", {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbyLd-rdJitzhX8LJaxj5w5kjaAj04Vt8jZPN1vDyZ_nlaVdkXO9lzAK7OZiAFD4yBnZeg/exec", {
           method: "POST",
           body: JSON.stringify(object)
         });
